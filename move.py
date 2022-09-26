@@ -1,4 +1,8 @@
 import os
+# from tkinter import W
+from datetime import date
+from datetime import datetime
+# dia = date.today()
 # Configuración carpetas
 downloadsFolder = "d:/Downloads/"
 musicfolder = "d:/Downloads/Musica/"
@@ -7,19 +11,13 @@ docfolder = "d:/Downloads/Documentos/"
 videofolder = "d:/Downloads/Videos/"
 compfolder = "d:/Downloads/Comprimidos/"
 execfolder = "d:/Downloads/Ejecutables/"
+imgfolder = "d:/Downloads/Imagenes/"
 
 print("Escaneando.......")
 if __name__ == "__main__":
-    music=0
-    video=0
-    doc=0
-    pdf=0
-    comp=0
-    exec=0
-
+    music = video = doc = pdf = comp = exec = img = 0
     for filename in os.listdir(downloadsFolder):
         name, extension = os.path.splitext(downloadsFolder + filename)
-
         if extension in [".mp3", ".wav"]:
             os.rename(downloadsFolder + filename, musicfolder + filename)
             music += 1
@@ -38,15 +36,33 @@ if __name__ == "__main__":
         if extension in [".exe", ".msi"]:
             os.rename(downloadsFolder + filename, execfolder + filename)
             exec += 1
-    if music == 0 and video == 0 and doc == 0 and pdf == 0 and comp == 0 and exec == 0:
-        print ("No se movio ningún archivo...")
+        if extension in [".jpg", ".png", ".gif", ".bmp"]:
+            os.rename(downloadsFolder + filename, imgfolder + filename)
+            img += 1
+
+    if music == 0 and video == 0 and doc == 0 and pdf == 0 and comp == 0 and exec == 0 and img == 0:
+        log = open("log.txt", "a")
+        now = datetime.now()
+        format = now.strftime('%d-%m-%Y | %H:%M:%S')
+        log.write("\n"+format)
+        # log.write("\n"+str(datetime.now()))
+        log.write("\nSin Movimientos")
+        log.write("\n*************************************")
+        log.close()
+
     else:
-        print("Archivos Movidos")
-        print("-------------------------------------")
-        print(f"Musica: {music} Archivos")
-        print(f"Videos: {video} Archivos")
-        print(f"Documentos: {doc} Archivos")
-        print(f"PDF: {pdf} Archivos")
-        print(f"Comprimmidos: {comp} Archivos")
-        print(f"Ejecutables: {exec} Archivos")
-        print("-------------------------------------")
+        log = open("log.txt", "a")
+        now = datetime.now()
+        format = now.strftime('%d-%m-%Y | %H:%M:%S')
+        log.write("\n"+format)
+        log.write("\nArchivos Movidos")
+        log.write("\n-------------------------------------")
+        log.write(f"\nMusica: {music} Archivos")
+        log.write(f"\nVideos: {video} Archivos")
+        log.write(f"\nDocumentos: {doc} Archivos")
+        log.write(f"\nPDF: {pdf} Archivos")
+        log.write(f"\nComprimmidos: {comp} Archivos")
+        log.write(f"\nEjecutables: {exec} Archivos")
+        log.write(f"\nImagenes: {img} Archivos")
+        log.write("\n*************************************")
+        log.close()
